@@ -1,11 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import Card from "./components/Card";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.header}>Weather</Text>
+      <View>
+        <Card />
+      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === "android" ? "padding" : "height"} style={styles.addCityWrapper}>
+        <TextInput style={styles.input} placeholder={"Write a city"} />
+        <TouchableOpacity >
+          <View style={styles.addWrapper}>
+            <Text style={styles.addCity}>+</Text>
+          </View>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </View>
   );
 }
@@ -13,8 +24,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#D4EFF2",
+    alignItems: "center",
+    justifyContent: "center",
   },
+  header: {
+    fontSize: 64,
+  },
+  addCityWrapper: {},
+  input: {},
+  addWrapper: {},
+  addCity: {},
 });
