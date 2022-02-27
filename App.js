@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, View, Image, ImageBackground, Text } from "react-native";
 import Card from "./components/Card";
 
 export default function App() {
   const [data, setData] = useState([]);
-  console.log(data);
+  const [selectedCity, setSelectedCity] = useState("Budapest");
 
-  const apiKey="96d3107260874a57b50102545221902&q"
+  
+  const apiKey = "96d3107260874a57b50102545221902&q";
+  const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}=${selectedCity}&aqi=no`;
 
+  
+  const bkgImage = require("./assets/pexels-lumn-1028600.jpg")
+  
+  const {...weatherIcon} = data.current
+  const {...icon} = weatherIcon.condition
+  const result = icon.icon
+
+  
   const getWeather = async () => {
     try {
-      const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}=Budapest&aqi=no`);
+      const response = await fetch(`${url}`);
+      console.log(response);
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -18,15 +29,16 @@ export default function App() {
     }
   };
 
-  console.log();
 
   useEffect(() => {
     getWeather();
-  }, []);
+  }, [selectedCity]);
 
   return (
     <View style={styles.container}>
-     <Card current={data.current} location={data.location} timezone={data.timezone}/>
+      <ImageBackground style={styles.bkgImage}>
+        <Card current={data.current} location={data.location} icon={result} selectedCity={selectedCity} setSelectedCity={setSelectedCity}/>
+      </ImageBackground>
     </View>
   );
 }
@@ -34,6 +46,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E4EFF2",
+    backgroundColor:"#A2B0B8",
+  },
+  bkgImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
 });
